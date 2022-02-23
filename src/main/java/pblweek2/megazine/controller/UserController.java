@@ -10,6 +10,7 @@ import pblweek2.megazine.dto.LoginRequestDto;
 import pblweek2.megazine.dto.SignupRequestDto;
 import pblweek2.megazine.entityResponse.SignupSuccess;
 import pblweek2.megazine.entityResponse.Success;
+import pblweek2.megazine.exception.AlreadyLoggedinException;
 import pblweek2.megazine.exception.ApiRequestException;
 import pblweek2.megazine.security.UserDetailsImpl;
 import pblweek2.megazine.service.UserService;
@@ -27,6 +28,7 @@ public class UserController {
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
             userService.checkPassword(requestDto);
             userService.registerUser(requestDto);
+            // 문제:미해결 -> 이미 존재하는 회원입니다.
             return new ResponseEntity<>(new SignupSuccess("success", "회원 가입 성공하였습니다."), HttpStatus.OK);
     }
 
@@ -39,6 +41,22 @@ public class UserController {
             userService.checkPassword(requestDto);
             userService.registerUser(requestDto);
             return new ResponseEntity<>(new SignupSuccess("success", "회원 가입 성공하였습니다."), HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/login")
+    public void getLoginPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            throw new AlreadyLoggedinException();
+        }
+        // (문제: 미해결) -> Spring Security 에서 제공하는 Login 페이지 HTML이 보여짐
+    }
+
+    @GetMapping("/user/signup")
+    public void getSignupPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            throw new AlreadyLoggedinException();
+            // (문제: 해결) -> exception error message가 정상적으로 뜬다. 위와 다른 점이 무엇일까?
         }
     }
 }

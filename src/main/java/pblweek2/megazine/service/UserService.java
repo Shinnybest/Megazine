@@ -37,12 +37,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public LoginResponseDto sendLoginUserData(LoginRequestDto loginRequestDto) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(loginRequestDto.getUsername())).orElseThrow(NullPointerException::new);
-        LoginResponseDto loginResponseDto = new LoginResponseDto(user.get());
-        return loginResponseDto;
-    }
-
     public void checkPassword(SignupRequestDto requestDto) {
         if (requestDto.getPassword().contains(requestDto.getUsername())) {
             throw new IllegalArgumentException("비밀번호에 유저네임이 들어갈 수 없습니다.");

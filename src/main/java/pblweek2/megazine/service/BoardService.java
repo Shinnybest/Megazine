@@ -62,9 +62,10 @@ public class BoardService {
             throw new UserNotLoginException();
         }
         Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)).orElseThrow(NullPointerException::new);
-        if (userDetails.getUsername() == requestDto.getUsername()) {
+        if (userDetails.getUsername().equals(requestDto.getUsername())) {
             board.get().update(requestDto);
         }
+        // 문제 : 미해결 -> 수정 실패 msg
     }
 
     public void delete(Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
