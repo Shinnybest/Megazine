@@ -1,6 +1,7 @@
 package pblweek2.megazine.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -11,5 +12,12 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("home");
         registry.addViewController("/user/signup").setViewName("signup");
         registry.addViewController("/user/login").setViewName("login");
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3030")
+                .allowedMethods("GET", "PUT", "DELETE");
     }
 }

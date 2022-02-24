@@ -24,7 +24,7 @@ import pblweek2.megazine.service.UserService;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    private final AuthenticationFailureHandler MyLoginFailureHandler;
-    private final AuthenticationSuccessHandler MyLoginSuccessHandler;
+//    private final AuthenticationSuccessHandler MyLoginSuccessHandler;
 
 
     @Override
@@ -54,11 +54,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin()
                     // 로그인 페이지 url
-    //                .loginPage("/user/login")
+                    .loginPage("/user/login")
                     // 로그인 처리 (POST /user/login)
                     .loginProcessingUrl("/api/login")
-                    .successHandler(MyLoginSuccessHandler)
-    //                  .failureHandler(MyLoginFailureHandler)
+                    .successHandler(new MyLoginSuccessHandler())
+                    .failureHandler(new MyLoginFailureHandler())
                     .permitAll()
                 .and()
                     .logout()
@@ -88,20 +88,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(); // Spring security에서 제공하는 비밀번호 암호화 객체
     }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
-    @Configuration
-    public class WebConfig implements WebMvcConfigurer {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**")
-                    .allowedOrigins("http://localhost:3030")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE");
-        }
-    }
+
 
 }

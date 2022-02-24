@@ -26,23 +26,27 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<SignupSuccess> signup_json(@Valid @RequestBody SignupRequestDto requestDto,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-            userService.checkPassword(requestDto);
-            userService.registerUser(requestDto);
-            // 문제:미해결 -> 이미 존재하는 회원입니다.
-            return new ResponseEntity<>(new SignupSuccess("success", "회원 가입 성공하였습니다."), HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/api/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<SignupSuccess> signup_form(@Valid @ModelAttribute SignupRequestDto requestDto,
-                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails != null) {
             throw new ApiRequestException("이미 회원가입된 계정입니다.");
         } else {
             userService.checkPassword(requestDto);
             userService.registerUser(requestDto);
+            // 문제:미해결 -> 이미 존재하는 회원입니다.
             return new ResponseEntity<>(new SignupSuccess("success", "회원 가입 성공하였습니다."), HttpStatus.OK);
         }
     }
+
+//    @PostMapping(value = "/api/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+//    public ResponseEntity<SignupSuccess> signup_form(@Valid @ModelAttribute SignupRequestDto requestDto,
+//                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        if (userDetails != null) {
+//            throw new ApiRequestException("이미 회원가입된 계정입니다.");
+//        } else {
+//            userService.checkPassword(requestDto);
+//            userService.registerUser(requestDto);
+//            return new ResponseEntity<>(new SignupSuccess("success", "회원 가입 성공하였습니다."), HttpStatus.OK);
+//        }
+//    }
 
     @GetMapping("/login")
     public void getLoginPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
