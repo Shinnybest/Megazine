@@ -12,6 +12,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -45,9 +46,16 @@ public class MyLoginSuccessHandler implements AuthenticationSuccessHandler {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetailsImpl userDetails = (UserDetailsImpl) principal;
 
+        HttpSession session = request.getSession();
+
+//        WebAuthenticationDetails web = (WebAuthenticationDetails) authentication.getDetails();
+
         Long userId = userDetails.getUser().getId();
         String username = userDetails.getUser().getUsername();
         String email = userDetails.getUser().getEmail();
+//        String session_id = web.getSessionId();
+
+
 
         UserDataResponseDto userDataResponseDto = new UserDataResponseDto(userId, username, email);
 
@@ -59,6 +67,8 @@ public class MyLoginSuccessHandler implements AuthenticationSuccessHandler {
         data.put("result", "success");
         data.put("msg", errormsg);
         data.put("userData", userDataResponseDto);
+        data.put("session_id", session.getId());
+//        System.out.println(session_id);
 
 
 
