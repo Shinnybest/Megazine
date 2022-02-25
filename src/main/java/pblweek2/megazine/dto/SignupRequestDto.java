@@ -26,4 +26,10 @@ public class SignupRequestDto {
 
     @NotBlank(message = "비밀번호를 다시 한번 입력해주세요.")
     private String passwordCheck;
+
+    public SignupRequestDto(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }

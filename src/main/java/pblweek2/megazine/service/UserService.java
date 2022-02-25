@@ -9,6 +9,7 @@ import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.LoginRequestDto;
 import pblweek2.megazine.dto.LoginResponseDto;
 import pblweek2.megazine.dto.SignupRequestDto;
+import pblweek2.megazine.exception.AlreadyRegisteredException;
 import pblweek2.megazine.repository.UserRepository;
 
 import java.util.Optional;
@@ -30,11 +31,12 @@ public class UserService implements UserDetailsService {
     public void registerUser(SignupRequestDto requestDto) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         requestDto.setPassword(bCryptPasswordEncoder.encode(requestDto.getPassword()));
-        String username = requestDto.getUsername();
-        String email = requestDto.getEmail();
-        String password = requestDto.getPassword();
-        User user = new User(username, email, password);
-        userRepository.save(user);
+        if (userRepository.findByUsername(requestDto.getUsername()).isPresent() || userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
+            throw new AlreadyRegisteredException();
+        } else {
+            User user = new User(requestDto);
+            userRepository.save(user);
+        }
     }
 
     public void checkPassword(SignupRequestDto requestDto) {

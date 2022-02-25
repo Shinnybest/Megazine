@@ -7,6 +7,7 @@ import pblweek2.megazine.domain.Board;
 import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.BoardRequestDto;
 import pblweek2.megazine.dto.BoardResponseDto;
+import pblweek2.megazine.exception.UnableToupdateBoardException;
 import pblweek2.megazine.exception.UserNotLoginException;
 import pblweek2.megazine.repository.BoardRepository;
 import pblweek2.megazine.repository.UserRepository;
@@ -64,8 +65,9 @@ public class BoardService {
         Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)).orElseThrow(NullPointerException::new);
         if (userDetails.getUsername().equals(requestDto.getUsername())) {
             board.get().update(requestDto);
+        } else {
+            throw new UnableToupdateBoardException();
         }
-        // 문제 : 미해결 -> 수정 실패 msg
     }
 
     public void delete(Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {

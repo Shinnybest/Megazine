@@ -36,6 +36,11 @@ public class ExceptionController {
         return new ResponseEntity<>(new Fail("이미 회원가입된 계정입니다."), HttpStatus.OK);
     }
 
+    @ExceptionHandler({UnableToupdateBoardException.class})
+    public ResponseEntity<Fail> UnableToupdateBoardException(UnableToupdateBoardException ex) {
+        return new ResponseEntity<>(new Fail("글은 작성자만 수정할 수 있습니다."), HttpStatus.OK);
+    }
+
 
 
 

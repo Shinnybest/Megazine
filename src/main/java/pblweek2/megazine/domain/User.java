@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pblweek2.megazine.dto.LikesRequestDto;
+import pblweek2.megazine.dto.SignupRequestDto;
 
 import javax.persistence.*;
 import java.util.*;
@@ -35,20 +36,17 @@ public class User extends Timestamped implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likelist> likelist = new ArrayList<Likelist>();
 
+    public User(SignupRequestDto requestDto) {
+        this.username = requestDto.getUsername();
+        this.email = requestDto.getEmail();
+        this.password = requestDto.getPassword();
+    }
 
     public void addUsertoBoard(Board board) { board.setUser(this); }
 
     public void addUsertoLikelist(Likelist likelist) { likelist.setUser(this);}
 
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
 
-    public User(LikesRequestDto likesRequestDto) {
-
-    }
 
     @Override
     public String getUsername() {
