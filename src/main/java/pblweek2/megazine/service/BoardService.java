@@ -3,6 +3,7 @@ package pblweek2.megazine.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pblweek2.megazine.domain.Board;
 import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.BoardRequestDto;
@@ -58,14 +59,15 @@ public class BoardService {
         return boardResponseDto;
     }
 
-
+    @Transactional
     public void update(Long boardId, BoardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails == null) {
             throw new UserNotLoginException();
         }
-        Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)).orElseThrow(NullPointerException::new);
+        Board board = boardRepository.findById(boardId).orElseThrow(()-> new NullPointerException("해당 게시글은 존재하지 않습니다."));
+//        Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)).orElseThrow(NullPointerException::new);
         if (userDetails.getUsername().equals(requestDto.getUsername())) {
-            board.get().update(requestDto);
+            board.update(requestDto);
         } else {
             throw new UnableToupdateBoardException();
         }
@@ -75,7 +77,6 @@ public class BoardService {
         if (userDetails == null) {
             throw new UserNotLoginException();
         }
-
         Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)).orElseThrow(NullPointerException::new);
         boardRepository.delete(board.get());
     }

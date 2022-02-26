@@ -1,12 +1,6 @@
 package pblweek2.megazine.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pblweek2.megazine.domain.User;
@@ -14,6 +8,8 @@ import pblweek2.megazine.dto.LoginRequestDto;
 import pblweek2.megazine.dto.SignupRequestDto;
 import pblweek2.megazine.dto.UserDataResponseDto;
 import pblweek2.megazine.exception.AlreadyRegisteredException;
+import pblweek2.megazine.exception.NoUsernameInPassword;
+import pblweek2.megazine.exception.PasswordCheckTwiceException;
 import pblweek2.megazine.repository.UserRepository;
 
 import java.util.Optional;
@@ -39,10 +35,10 @@ public class UserService {
 
     public void checkPassword(SignupRequestDto requestDto) {
         if (requestDto.getPassword().contains(requestDto.getUsername())) {
-            throw new IllegalArgumentException("비밀번호에 유저네임이 들어갈 수 없습니다.");
+            throw new NoUsernameInPassword();
         }
         if (!requestDto.getPassword().equals(requestDto.getPasswordCheck())) {
-            throw new IllegalArgumentException("비밀번호가 서로 일치하지 않습니다.");
+            throw new PasswordCheckTwiceException();
         }
     }
 

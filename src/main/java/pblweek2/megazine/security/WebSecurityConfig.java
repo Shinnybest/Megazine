@@ -41,7 +41,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-
     @Override
     public void configure(WebSecurity web) {
         // h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
@@ -82,7 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    private final UserService userService;
     private final UserDetailsServiceImpl userDetailsService;
 
-
     @Override
     // Spring Security에서 모든 인증은 AuthenticationManager를 통해 이루어지며 AuthenticationManager를 생성하기 위해서는
     // AuthenticationManagerBuilder를 사용합니다.
@@ -90,11 +88,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService) // user정보를 어느 service에서 가져올 지 결정
                 .passwordEncoder(new BCryptPasswordEncoder());
-
     }
-
-
-
-
-
 }

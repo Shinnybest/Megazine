@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LikelistTest {
-    @Test
-    @DisplayName("setUser 테스트")
-    void setUsertoLikelists() {
-        //given
-
-        //when
-        //then
-    }
+//    @Test
+//    @DisplayName("setUser 테스트")
+//    void setUsertoLikelists() {
+//        //given
+//
+//        //when
+//        //then
+//    }
 
 }

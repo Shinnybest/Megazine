@@ -11,7 +11,7 @@ public class BoardRequestDto {
 
     public BoardRequestDto(String grid, String content, String username, String imageUrl) {
         this.grid = grid;
-        this.content =content;
+        this.content = content;
         this.username = username;
         this.imageUrl = imageUrl;
     }

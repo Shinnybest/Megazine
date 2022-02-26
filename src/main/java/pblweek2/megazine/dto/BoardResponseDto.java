@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BoardResponseDto {
     private Long boardId;
-    private String creator;
+    private String creater;
     private String content;
     private String imageUrl;
     private String grid;
@@ -23,7 +23,7 @@ public class BoardResponseDto {
 
     public BoardResponseDto(Board board) {
         this.boardId = board.getId();
-        this.creator = board.getUsername();
+        this.creater = board.getUsername();
         this.content = board.getContent();
         this.imageUrl = board.getImageUrl();
         this.grid = board.getGrid();

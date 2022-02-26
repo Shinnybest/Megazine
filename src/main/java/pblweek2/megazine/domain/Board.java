@@ -44,7 +44,6 @@ public class Board extends Timestamped {
         this.content = boardRequestDto.getContent();
         this.username = boardRequestDto.getUsername();
         this.imageUrl = boardRequestDto.getImageUrl();
-
     }
 
     public void setUser(User user) { this.user = user; }
@@ -52,10 +51,10 @@ public class Board extends Timestamped {
     public void addBoardtoLikelist(Likelist likelist) { likelist.setBoard(this); }
 
     public void update(BoardRequestDto requestDto) {
-        this.username = requestDto.getUsername();
         this.grid = requestDto.getGrid();
-        this.imageUrl = requestDto.getImageUrl();
         this.content = requestDto.getContent();
+        this.username = requestDto.getUsername();
+        this.imageUrl = requestDto.getImageUrl();
     }
 
 }

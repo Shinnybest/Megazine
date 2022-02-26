@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class AccessDeniedHandler implements org.springframework.security.web.access.AccessDeniedHandler {
-//    private static final Logger logger = LoggerFactory.getLogger(AccessDeniedHandler.class);
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
@@ -26,11 +25,10 @@ public class AccessDeniedHandler implements org.springframework.security.web.acc
         PrintWriter writer = response.getWriter();
 
         String message = "페이지 접근 권한이 없습니다.(msg: No Authorization)";
-        json.put("code", "9999");
+        json.put("result", "fail");
         json.put("message", message);
 
         PrintWriter out = response.getWriter();
         out.print(json);
     }
-
 }

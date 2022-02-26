@@ -20,49 +20,49 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BoardTest {
 
-    @Autowired
-    UserRepository userRepository;
+//    @Autowired
+//    UserRepository userRepository;
+//
+//    @Autowired
+//    BoardRepository boardRepository;
+//
+//    @BeforeAll
+//    public void setup() throws Exception {
+//
+//        String username = "testuser";
+//        String email = "kim@gmail.com";
+//        String password = "test1234";
+//
+//        SignupRequestDto signupRequestDto = new SignupRequestDto(
+//                username,
+//                email,
+//                password
+//        );
+//
+//        User user = new User(signupRequestDto); // -> 자동으로 id 생성?
+//
+//        String grid = "11";
+//        String content = "111";
+//        String imageUrl = "1111";
+//
+//        BoardRequestDto boardRequestDto = new BoardRequestDto(
+//                grid,
+//                content,
+//                username,
+//                imageUrl);
+//
+//        Board board = new Board(boardRequestDto);
+//
+//        boardRepository.save(board);
+//    }
 
-    @Autowired
-    BoardRepository boardRepository;
-
-    @BeforeAll
-    public void setup() throws Exception {
-
-        String username = "testuser";
-        String email = "kim@gmail.com";
-        String password = "test1234";
-
-        SignupRequestDto signupRequestDto = new SignupRequestDto(
-                username,
-                email,
-                password
-        );
-
-        User user = new User(signupRequestDto); // -> 자동으로 id 생성?
-
-        String grid = "11";
-        String content = "111";
-        String imageUrl = "1111";
-
-        BoardRequestDto boardRequestDto = new BoardRequestDto(
-                grid,
-                content,
-                username,
-                imageUrl);
-
-        Board board = new Board(boardRequestDto);
-
-        boardRepository.save(board);
-    }
-
-    @Test
-    @DisplayName("유저ID를 BOARD의 COLUMN으로 매핑하기")
-    void UserMappedByBoardTable() {
-        Board board = boardRepository.findAll().get(0);
-        Long USERID = board.getUser().getId();
-        User user = userRepository.findAll().get(0);
-        Assertions.assertThat(USERID).isEqualTo(user.getId());
-        }
+//    @Test
+//    @DisplayName("유저ID를 BOARD의 COLUMN으로 매핑하기")
+//    void UserMappedByBoardTable() {
+//        Board board = boardRepository.findAll().get(0);
+//        Long USERID = board.getUser().getId();
+//        User user = userRepository.findAll().get(0);
+//        Assertions.assertThat(USERID).isEqualTo(user.getId());
+//        }
 
     }

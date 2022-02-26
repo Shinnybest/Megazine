@@ -26,6 +26,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         // json 리턴 및 한글깨짐 수정.
         response.setContentType(MediaType.APPLICATION_JSON_VALUE); // "application/json;charset=utf-8"
 
+//        response.setContentType("text/html; charset=UTF-8"); // 보낼 때 한글 인코딩
+
         JSONObject json = new JSONObject();
         String message = "No Authentication";
         json.put("result", "fail");
@@ -42,7 +44,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 //
 //        data.put("result", "fail");
 //        data.put("msg", errormsg);
-//
 //
 //        response.setContentType("text/html; charset=UTF-8"); // 보낼 때 한글 인코딩
 //        response.setCharacterEncoding("UTF-8");

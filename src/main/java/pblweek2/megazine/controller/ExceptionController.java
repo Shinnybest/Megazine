@@ -56,6 +56,16 @@ public class ExceptionController {
         return new ResponseEntity<>(new Fail("비밀번호 입력이 잘못되었습니다. 다시 입력해주세요."), HttpStatus.OK);
     }
 
+    @ExceptionHandler({NoUsernameInPassword.class})
+    public ResponseEntity<Fail> NoUsernameInPassword(NoUsernameInPassword ex) {
+        return new ResponseEntity<>(new Fail("유저명을 비밀번호로 사용할 수 없습니다."), HttpStatus.OK);
+    }
+
+    @ExceptionHandler({PasswordCheckTwiceException.class})
+    public ResponseEntity<Fail> PasswordCheckTwiceException(PasswordCheckTwiceException ex) {
+        return new ResponseEntity<>(new Fail("비밀번호 확인이 일치하지 않습니다."), HttpStatus.OK);
+    }
+
 
 
 

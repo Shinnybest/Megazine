@@ -31,8 +31,8 @@ public class User extends Timestamped implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String refresh_token;
+//    @Column
+//    private String refresh_token;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> board = new ArrayList<Board>();
@@ -56,8 +56,6 @@ public class User extends Timestamped implements UserDetails {
     public void addUsertoBoard(Board board) { board.setUser(this); }
 
     public void addUsertoLikelist(Likelist likelist) { likelist.setUser(this);}
-
-
 
     @Override
     public String getUsername() {
