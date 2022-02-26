@@ -2,6 +2,7 @@ package pblweek2.megazine.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,6 +31,9 @@ public class User extends Timestamped implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column
+    private String refresh_token;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> board = new ArrayList<Board>();
 
@@ -40,6 +44,13 @@ public class User extends Timestamped implements UserDetails {
         this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
         this.password = requestDto.getPassword();
+    }
+
+    @Builder
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     public void addUsertoBoard(Board board) { board.setUser(this); }

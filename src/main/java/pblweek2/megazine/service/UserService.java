@@ -1,14 +1,18 @@
 package pblweek2.megazine.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.LoginRequestDto;
-import pblweek2.megazine.dto.LoginResponseDto;
 import pblweek2.megazine.dto.SignupRequestDto;
+import pblweek2.megazine.dto.UserDataResponseDto;
 import pblweek2.megazine.exception.AlreadyRegisteredException;
 import pblweek2.megazine.repository.UserRepository;
 
@@ -16,21 +20,15 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println(username);
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("No ID")); // 안에 메세지를 적는다
-    }
 
 
     public void registerUser(SignupRequestDto requestDto) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        requestDto.setPassword(bCryptPasswordEncoder.encode(requestDto.getPassword()));
+        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         if (userRepository.findByUsername(requestDto.getUsername()).isPresent() || userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             throw new AlreadyRegisteredException();
         } else {
@@ -47,5 +45,18 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("비밀번호가 서로 일치하지 않습니다.");
         }
     }
+
+    public UserDataResponseDto sendUserDataWhenLogin(LoginRequestDto loginRequestDto, String accessToken, String refreshToken) {
+        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(loginRequestDto.getEmail())).orElseThrow(NullPointerException::new);
+        Long userId = user.get().getId();
+        String username = user.get().getUsername();
+        String email = user.get().getEmail();
+        String access_Token = accessToken;
+        String refresh_Token = refreshToken;
+
+        UserDataResponseDto userDataResponseDto = new UserDataResponseDto(userId, username, email, access_Token, refresh_Token);
+        return userDataResponseDto;
+    }
+
 
 }

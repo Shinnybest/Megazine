@@ -41,6 +41,21 @@ public class ExceptionController {
         return new ResponseEntity<>(new Fail("글은 작성자만 수정할 수 있습니다."), HttpStatus.OK);
     }
 
+    @ExceptionHandler({AlreadyLikedException.class})
+    public ResponseEntity<Fail> AlreadyLikedException(AlreadyLikedException ex) {
+        return new ResponseEntity<>(new Fail("이미 좋아요 한 게시물입니다."), HttpStatus.OK);
+    }
+
+    @ExceptionHandler({TokenValidationException.class})
+    public ResponseEntity<Fail> TokenValidationException(TokenValidationException ex) {
+        return new ResponseEntity<>(new Fail("토큰이 잘못되었거나 만료되었습니다."), HttpStatus.OK);
+    }
+
+    @ExceptionHandler({WrongPasswordException.class})
+    public ResponseEntity<Fail> WrongPasswordException(WrongPasswordException ex) {
+        return new ResponseEntity<>(new Fail("비밀번호 입력이 잘못되었습니다. 다시 입력해주세요."), HttpStatus.OK);
+    }
+
 
 
 

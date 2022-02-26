@@ -7,6 +7,7 @@ import pblweek2.megazine.domain.Board;
 import pblweek2.megazine.domain.Likelist;
 import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.LikesRequestDto;
+import pblweek2.megazine.exception.AlreadyLikedException;
 import pblweek2.megazine.exception.UserNotLoginException;
 import pblweek2.megazine.repository.BoardRepository;
 import pblweek2.megazine.repository.LikesRepository;
@@ -23,27 +24,15 @@ public class LikesService {
     private final UserRepository userRepository;
     private final LikesRepository likesRepository;
 
-
-    public Likelist postLikes(Long boardId, LikesRequestDto likesRequestDto) {
-        Board board = boardRepository.findById(boardId).orElseThrow(NullPointerException::new);
-        User user = userRepository.findById(likesRequestDto.getUserId()).orElseThrow(NullPointerException::new);
-        Likelist likelist = new Likelist();
-        likelist.setBoard(board);
-        likelist.setUser(user);
-        return likelist;
-    }
-
-    public boolean checkUserExists(LikesRequestDto likesrequestDto) {
-        if (userRepository.findById(likesrequestDto.getUserId()) != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public Likelist addlikes(Long boardId, LikesRequestDto likesrequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null){
+        if (userDetails == null) {
             throw new UserNotLoginException();
+        }
+        if (likesRepository.findByBoard_IdAndUserId(boardId, likesrequestDto.getUserId()).isPresent()) {
+            System.out.println(boardId);
+            System.out.println(likesrequestDto.getUserId());
+
+            throw new AlreadyLikedException();
         }
         Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)).orElseThrow(NullPointerException::new);
         Optional<User> user = Optional.ofNullable(userRepository.findById(likesrequestDto.getUserId())).orElseThrow(NullPointerException::new);
@@ -57,7 +46,6 @@ public class LikesService {
         if(userDetails == null) {
             throw new UserNotLoginException();
         }
-
         Optional<Likelist> likelist = Optional.ofNullable(likesRepository.findByBoard_IdAndUserId(boardId, likesRequestDto.getUserId())).orElseThrow(NullPointerException::new);
         return likelist.get();
     }

@@ -7,6 +7,7 @@ import pblweek2.megazine.domain.Board;
 import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.BoardRequestDto;
 import pblweek2.megazine.dto.BoardResponseDto;
+import pblweek2.megazine.exception.BoardNotFoundException;
 import pblweek2.megazine.exception.UnableToupdateBoardException;
 import pblweek2.megazine.exception.UserNotLoginException;
 import pblweek2.megazine.repository.BoardRepository;
@@ -48,12 +49,12 @@ public class BoardService {
     }
 
     public BoardResponseDto getOneBoardData(Long boardId_param, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new UserNotLoginException();
+//        Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId_param)).orElseThrow(BoardNotFoundException::new);
+        Optional<Board> foundBoard = boardRepository.findById(boardId_param);
+        if (foundBoard == null) {
+            throw new BoardNotFoundException();
         }
-
-        Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId_param)).orElseThrow(NullPointerException::new);
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board.get());
+        BoardResponseDto boardResponseDto = new BoardResponseDto(foundBoard.get());
         return boardResponseDto;
     }
 

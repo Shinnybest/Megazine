@@ -15,7 +15,7 @@ public class BoardResponseDto {
     private Long boardId;
     private String creator;
     private String content;
-    private String imageurl;
+    private String imageUrl;
     private String grid;
     private int likeCount;
     private LocalDateTime createdAt;
@@ -25,7 +25,7 @@ public class BoardResponseDto {
         this.boardId = board.getId();
         this.creator = board.getUsername();
         this.content = board.getContent();
-        this.imageurl = board.getImageUrl();
+        this.imageUrl = board.getImageUrl();
         this.grid = board.getGrid();
         this.createdAt = board.getCreatedAt();
 

@@ -1,7 +1,9 @@
 package pblweek2.megazine.entityResponse;
 
+import lombok.Getter;
 import pblweek2.megazine.dto.UserDataResponseDto;
 
+@Getter
 public class LoginSuccess {
     private String result;
     private String msg;

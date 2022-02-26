@@ -43,70 +43,9 @@ class UserTest {
         );
 
         // then
-        assertNull();
+        assertNull(user.getId()); // 왜 null인가?
         assertEquals(username, user.getUsername());
         assertEquals(email, user.getEmail());
         assertEquals(password, user.getPassword());
     }
-
-//    @Autowired
-//    UserRepository userRepository;
-//
-//    @Autowired
-//    BoardRepository boardRepository;
-//
-//    @Before
-//    public void setup() throws Exception {
-//        String username = "testuser";
-//        String email = "kim@gmail.com";
-//        String password = "test1234";
-//
-//        SignupRequestDto signupRequestDto = new SignupRequestDto(
-//                username,
-//                email,
-//                password
-//        );
-//
-//        User user = new User(signupRequestDto);
-//
-//        String grid = "11";
-//        String content = "111";
-//        String imageUrl = "1111";
-//
-//        BoardRequestDto boardRequestDto = new BoardRequestDto(grid, content, username, imageUrl);
-//        Board board = new Board(boardRequestDto);
-//
-//        boardRepository.save(board);
-//    }
-//
-//    @Test
-//    @DisplayName("유저ID를 BOARD의 COLUMN으로 매핑하기")
-//    void UserMappedByBoardTable() {
-//        Board board = boardRepository.findAll().get(0);
-//        Long USERID = board.getUser().getId();
-//        assertThat(USERID).isEqualTo("member1");
-//
-//        Team team = member.getTeam();
-//        assertThat(team.getName()).isEqualTo("TeamA");
-//
-//        List<Member> members = team.getMembers();
-//        for (Member m : members) {
-//            assertThat(m.getUsername()).startsWith("member");
-//        }
-//
-//
-//
-//
-//        // given
-//
-//
-//
-//        // when
-//
-//
-//        // then
-//
-//    }
-
-
 }

@@ -1,16 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Spring Security Example </title>
 </head>
 <body>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
+
 <form th:action="@{/api/login}" method="post">
     <!-- post 방식으로 /login에 요청, 스프링 시큐리티는 이 요청을 가로채고 사용자를 인증하는 필터 제공 -->
     <!-- 인증에 실패 시 /login?error 페이지로 리다이렉트-->
