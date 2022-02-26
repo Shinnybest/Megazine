@@ -42,12 +42,13 @@ public class UserController {
         }
 
         Long AccessTokenValidTime = 30 * 60 * 1000L;
-        Long RefreshTokenValidTime = 10080 * 60 * 1000L;
+//        Long RefreshTokenValidTime = 10080 * 60 * 1000L;
 
         String accessToken = jwtTokenProvider.createToken(user.getEmail(), AccessTokenValidTime);
-        String refreshToken = jwtTokenProvider.createToken(user.getEmail(), RefreshTokenValidTime);
-        userRepository.updateRefreshToken(loginRequestDto.getEmail(), refreshToken);
-        return new ResponseEntity<>(new LoginSuccess(userService.sendUserDataWhenLogin(loginRequestDto, accessToken, refreshToken)), HttpStatus.OK);
+//        String refreshToken = jwtTokenProvider.createToken(user.getEmail(), RefreshTokenValidTime);
+//        userRepository.updateRefreshToken(loginRequestDto.getEmail(), refreshToken);
+//        return new ResponseEntity<>(new LoginSuccess(userService.sendUserDataWhenLogin(loginRequestDto, accessToken, refreshToken)), HttpStatus.OK);
+        return new ResponseEntity<>(new LoginSuccess(userService.sendUserDataWhenLogin(loginRequestDto, accessToken)), HttpStatus.OK);
     }
 
 }

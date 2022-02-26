@@ -13,8 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
 
-    @Transactional
-    @Modifying
-    @Query("update User u set u.refresh_token = :refresh_token where u.email = :email")
-    void updateRefreshToken(@Param(value = "email") String email, @Param(value = "refresh_token") String refresh_token);
+//    @Transactional
+//    @Modifying
+//    @Query("update User u set u.refresh_token = :refresh_token where u.email = :email")
+//    void updateRefreshToken(@Param(value = "email") String email, @Param(value = "refresh_token") String refresh_token);
 }

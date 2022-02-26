@@ -7,14 +7,15 @@ public class UserDataResponseDto {
     private Long userId;
     private String username;
     private String email;
-    private String accessToken;
-    private String refreshToken;
+    private String token;
+//    private String refreshToken;
+//public UserDataResponseDto(Long userId, String username, String email, String accessToken, String refreshToken) {
+    public UserDataResponseDto(Long userId, String username, String email, String token) {
 
-    public UserDataResponseDto(Long userId, String username, String email, String accessToken, String refreshToken) {
         this.userId = userId;
         this.username = username;
         this.email = email;
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
+        this.token = token;
+//        this.refreshToken = refreshToken;
     }
 }

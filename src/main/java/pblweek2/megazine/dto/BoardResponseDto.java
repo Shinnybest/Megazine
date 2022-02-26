@@ -19,7 +19,7 @@ public class BoardResponseDto {
     private String grid;
     private int likeCount;
     private LocalDateTime createdAt;
-    private List<LikesResponseDto> likesuserIdlist = new ArrayList<>();
+    private List<LikesResponseDto> likes = new ArrayList<>();
 
     public BoardResponseDto(Board board) {
         this.boardId = board.getId();
@@ -30,9 +30,9 @@ public class BoardResponseDto {
         this.createdAt = board.getCreatedAt();
 
         for (Likelist each: board.getLikelist()) {
-            likesuserIdlist.add(new LikesResponseDto(each));
+            likes.add(new LikesResponseDto(each));
         }
 
-        this.likeCount = likesuserIdlist.size();
+        this.likeCount = likes.size();
     }
 }

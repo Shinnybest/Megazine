@@ -29,9 +29,6 @@ public class LikesService {
             throw new UserNotLoginException();
         }
         if (likesRepository.findByBoard_IdAndUserId(boardId, likesrequestDto.getUserId()).isPresent()) {
-            System.out.println(boardId);
-            System.out.println(likesrequestDto.getUserId());
-
             throw new AlreadyLikedException();
         }
         Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)).orElseThrow(NullPointerException::new);

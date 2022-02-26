@@ -3,6 +3,7 @@ package pblweek2.megazine.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -66,11 +67,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/api/board").permitAll()
-                .antMatchers("/api/board/{boardId}").permitAll()
-                .antMatchers("/user/login").permitAll()
-                .antMatchers("/user/signup").permitAll()
+//                .antMatchers("/").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/board").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/board/{boardId}").permitAll()
+//                .antMatchers("/user/login").permitAll()
+//                .antMatchers("/user/signup").permitAll()
                 .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .anyRequest().authenticated() // 모든 요청에 대해 인증된 사용자만 접근 가능

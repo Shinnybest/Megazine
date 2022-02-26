@@ -28,8 +28,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         JSONObject json = new JSONObject();
         String message = "No Authentication";
-        json.put("code", "9999");
-        json.put("message", message);
+        json.put("result", "fail");
+        json.put("message", "페이지 권한이 없습니다. 로그인을 해주세요.(Entrypoint)");
 
         PrintWriter out = response.getWriter();
         out.print(json);

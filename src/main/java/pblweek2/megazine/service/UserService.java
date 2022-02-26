@@ -46,15 +46,16 @@ public class UserService {
         }
     }
 
-    public UserDataResponseDto sendUserDataWhenLogin(LoginRequestDto loginRequestDto, String accessToken, String refreshToken) {
+    public UserDataResponseDto sendUserDataWhenLogin(LoginRequestDto loginRequestDto, String accessToken) {
         Optional<User> user = Optional.ofNullable(userRepository.findByEmail(loginRequestDto.getEmail())).orElseThrow(NullPointerException::new);
         Long userId = user.get().getId();
         String username = user.get().getUsername();
         String email = user.get().getEmail();
         String access_Token = accessToken;
-        String refresh_Token = refreshToken;
+//        String refresh_Token = refreshToken;
 
-        UserDataResponseDto userDataResponseDto = new UserDataResponseDto(userId, username, email, access_Token, refresh_Token);
+//        UserDataResponseDto userDataResponseDto = new UserDataResponseDto(userId, username, email, access_Token, refresh_Token);
+        UserDataResponseDto userDataResponseDto = new UserDataResponseDto(userId, username, email, access_Token);
         return userDataResponseDto;
     }
 
