@@ -24,17 +24,15 @@ public class LikesController {
 
 
     @PostMapping("/api/board/{boardId}/like")
-    public ResponseEntity<LikeBoard> likeBoard(@PathVariable Long boardId, @RequestBody LikesRequestDto likesrequestDto,
-                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
-            Likelist likelist = likesService.addlikes(boardId, likesrequestDto, userDetails);
+    public ResponseEntity<LikeBoard> likeBoard(@PathVariable Long boardId, @RequestBody LikesRequestDto likesrequestDto) {
+            Likelist likelist = likesService.addlikes(boardId, likesrequestDto);
             likesRepository.save(likelist);
             return new ResponseEntity<>(new LikeBoard("success", "좋아요 추가 성공"), HttpStatus.OK);
     }
 
     @DeleteMapping("/api/board/{boardId}/like")
-    public ResponseEntity<CancelLikeBoard> cancelLikeBoard(@PathVariable Long boardId, @RequestBody LikesRequestDto likesRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Likelist likelist = likesService.deletelikes(boardId, likesRequestDto, userDetails);
-        likesRepository.delete(likelist);
+    public ResponseEntity<CancelLikeBoard> cancelLikeBoard(@PathVariable Long boardId, @RequestBody LikesRequestDto likesRequestDto) {
+        likesService.deletelikes(boardId, likesRequestDto);
         return new ResponseEntity<>(new CancelLikeBoard("success", "좋아요 삭제 성공"), HttpStatus.OK);
     }
 }
