@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.Assert;
 import pblweek2.megazine.dto.LikesRequestDto;
 import pblweek2.megazine.dto.SignupRequestDto;
 
@@ -17,7 +18,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
-public class User extends Timestamped implements UserDetails {
+public class User extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -40,58 +41,20 @@ public class User extends Timestamped implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likelist> likelist = new ArrayList<Likelist>();
 
-    public User(SignupRequestDto requestDto) {
-        this.username = requestDto.getUsername();
-        this.email = requestDto.getEmail();
-        this.password = requestDto.getPassword();
-    }
-
     @Builder
     public User(String username, String email, String password) {
+        Assert.hasText(username, "username must not be empty.");
+        Assert.hasText(email, "email must not be empty.");
+        Assert.hasText(password, "password must not be empty.");
+
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
+    public void setId(Long id) { this.id = id; }
+
     public void addUsertoBoard(Board board) { board.setUser(this); }
 
     public void addUsertoLikelist(Likelist likelist) { likelist.setUser(this);}
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        return null;
-    }
-
-
 }

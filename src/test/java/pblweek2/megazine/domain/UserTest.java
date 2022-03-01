@@ -2,7 +2,9 @@ package pblweek2.megazine.domain;
 
 //import org.junit.Before;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 //import org.junit.runner.RunWith;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -22,30 +24,77 @@ import static org.junit.jupiter.api.Assertions.*;
 //@DataJpaTest
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserTest {
-    @Test
+
+    @Nested
     @DisplayName("새로운 유저 생성")
-    void createUser() {
+    class createUser {
 
         // given
-        String username = "testuser";
-        String email = "kim@gmail.com";
-        String password = "test1234";
+        private String username;
+        private String email;
+        private String password;
 
-        SignupRequestDto signupRequestDto = new SignupRequestDto(
-                username,
-                email,
-                password
-        );
+        @BeforeEach
+        void setup() {
+            username = "deliciousharibo";
+            email = "jellycompany@naver.com";
+            password = "secretrecipe";
+        }
 
-        // when
-        User user = new User(
-                signupRequestDto
-        );
+        @Test
+        @DisplayName("정상케이스")
+        void createUser_normal() {
+            //given
+            String passwordCheck = password;
+            SignupRequestDto requestDto = new SignupRequestDto(
+                    username,
+                    email,
+                    password,
+                    passwordCheck
+            );
 
-        // then
-        assertNull(user.getId()); // 왜 null인가?
-        assertEquals(username, user.getUsername());
-        assertEquals(email, user.getEmail());
-        assertEquals(password, user.getPassword());
+            //when
+            User user = User.builder()
+                    .username(requestDto.getUsername())
+                    .email(requestDto.getEmail())
+                    .password(requestDto.getPassword())
+                    .build();
+
+            //then
+            assertNull(user.getId()); // 왜 null인가?
+            assertEquals(username, user.getUsername());
+            assertEquals(email, user.getEmail());
+            assertEquals(password, user.getPassword());
+        }
+
+        @Nested
+        @DisplayName("실패케이스")
+        class FailCases {
+            @Nested
+            @DisplayName("유저명")
+            class username {
+                @Test
+                @DisplayName("세자리 미만")
+                void fail1() {
+                    //given
+                    username = "ab";
+                    String passwordCheck = password;
+                    SignupRequestDto signupRequestDto = new SignupRequestDto(
+                            username,
+                            email,
+                            password,
+                            passwordCheck
+                    );
+
+
+
+                }
+            }
+        }
+
     }
+
+
+
+
 }
