@@ -2,8 +2,10 @@ package pblweek2.megazine.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 import pblweek2.megazine.dto.BoardChangeRequestDto;
 import pblweek2.megazine.dto.BoardRequestDto;
 
@@ -46,7 +48,23 @@ public class Board extends Timestamped {
         this.imageUrl = boardRequestDto.getImageUrl();
     }
 
+    @Builder
+    public Board(String grid, String content, String username, String imageUrl, User user) {
+        Assert.hasText(grid, "grid must not be empty.");
+        Assert.hasText(content, "content must not be empty.");
+        Assert.hasText(username, "username must not be empty.");
+        Assert.hasText(imageUrl, "imageUrl must not be empty.");
+
+        this.grid = grid;
+        this.content = content;
+        this.username = username;
+        this.imageUrl = imageUrl;
+        this.user = user;
+    }
+
     public void setUser(User user) { this.user = user; }
+
+    public void setId(Long id) { this.id = id; }
 
     public void addBoardtoLikelist(Likelist likelist) { likelist.setBoard(this); }
 

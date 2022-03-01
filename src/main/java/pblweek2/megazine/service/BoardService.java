@@ -6,11 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pblweek2.megazine.domain.Board;
 import pblweek2.megazine.domain.User;
+import pblweek2.megazine.dto.BoardDeleteRequestDto;
 import pblweek2.megazine.dto.BoardRequestDto;
 import pblweek2.megazine.dto.BoardResponseDto;
-import pblweek2.megazine.exception.BoardNotFoundException;
-import pblweek2.megazine.exception.UnableToupdateBoardException;
-import pblweek2.megazine.exception.UserNotLoginException;
+import pblweek2.megazine.exception_2.CustomException;
 import pblweek2.megazine.repository.BoardRepository;
 import pblweek2.megazine.repository.UserRepository;
 import pblweek2.megazine.security.UserDetailsImpl;
@@ -20,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static pblweek2.megazine.exception_2.ErrorCode.*;
+
 @RequiredArgsConstructor
 @Service
 public class BoardService {
@@ -27,16 +28,22 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    public Board postBoard(BoardRequestDto boardRequestDto) {
+            Board board = Board.builder()
+                    .grid(boardRequestDto.getGrid())
+                    .content(boardRequestDto.getContent())
+                    .username(boardRequestDto.getUsername())
+                    .imageUrl(boardRequestDto.getImageUrl())
+                    .build();
 
-    public Long postBoard(BoardRequestDto boardRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new UserNotLoginException();
-        }
-        Board board = new Board(boardRequestDto);
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(boardRequestDto.getUsername())).orElseThrow(NullPointerException::new);
-        user.get().addUsertoBoard(board);
-        boardRepository.save(board);
-        return board.getId();
+            Optional<User> user = userRepository.findByUsername(board.getUsername());
+            if(!user.isPresent()) {
+                throw new CustomException(EMAIL_NOT_FOUND);
+            }
+            User foundUser = user.get();
+            foundUser.addUsertoBoard(board);
+            boardRepository.save(board);
+            return board;
     }
 
     public List<BoardResponseDto> getAllBoardData() {
@@ -49,11 +56,10 @@ public class BoardService {
         return boardResponseDtoList;
     }
 
-    public BoardResponseDto getOneBoardData(Long boardId_param, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId_param)).orElseThrow(BoardNotFoundException::new);
-        Optional<Board> foundBoard = boardRepository.findById(boardId_param);
-        if (foundBoard == null) {
-            throw new BoardNotFoundException();
+    public BoardResponseDto getOneBoardData(Long boardId) {
+        Optional<Board> foundBoard = boardRepository.findById(boardId);
+        if (!foundBoard.isPresent()) {
+            throw new CustomException(BOARD_NOT_FOUND);
         }
         BoardResponseDto boardResponseDto = new BoardResponseDto(foundBoard.get());
         return boardResponseDto;
@@ -61,23 +67,30 @@ public class BoardService {
 
     @Transactional
     public void update(Long boardId, BoardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new UserNotLoginException();
+        Optional<Board> board = boardRepository.findById(boardId);
+        if (!board.isPresent()) {
+            throw new CustomException(BOARD_NOT_FOUND);
         }
-        Board board = boardRepository.findById(boardId).orElseThrow(()-> new NullPointerException("해당 게시글은 존재하지 않습니다."));
-//        Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)).orElseThrow(NullPointerException::new);
         if (userDetails.getUsername().equals(requestDto.getUsername())) {
-            board.update(requestDto);
+            Board foundBoard = board.get();
+            foundBoard.update(requestDto);
         } else {
-            throw new UnableToupdateBoardException();
+            throw new CustomException(UNABLE_UPDATE_BOARD);
         }
     }
 
-    public void delete(Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new UserNotLoginException();
+    public void delete(Long boardId, BoardDeleteRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Optional<Board> board = boardRepository.findById(boardId);
+        if (!board.isPresent()) {
+            throw new CustomException(BOARD_NOT_FOUND);
         }
-        Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)).orElseThrow(NullPointerException::new);
-        boardRepository.delete(board.get());
+        if (userDetails.getUsername().equals(requestDto.getUsername())) {
+            Board foundBoard = board.get();
+            boardRepository.delete(foundBoard);
+        } else {
+            throw new CustomException(UNABLE_DELETE_BOARD);
+        }
+
+
     }
 }
