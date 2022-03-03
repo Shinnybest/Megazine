@@ -7,14 +7,14 @@ import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.BoardDeleteRequestDto;
 import pblweek2.megazine.dto.BoardRequestDto;
 import pblweek2.megazine.dto.BoardResponseDto;
-import pblweek2.megazine.exception_2.CustomException;
+import pblweek2.megazine.exception.CustomException;
 import pblweek2.megazine.security.UserDetailsImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static pblweek2.megazine.exception_2.ErrorCode.*;
+import static pblweek2.megazine.exception.ErrorCode.*;
 
 public class MockBoardService {
         private final MockBoardRepository mockBoardRepository;
@@ -26,7 +26,12 @@ public class MockBoardService {
         }
 
         public Board postBoard(BoardRequestDto boardRequestDto) {
-            Board board = new Board(boardRequestDto);
+            Board board = Board.builder()
+                    .grid(boardRequestDto.getGrid())
+                    .content(boardRequestDto.getContent())
+                    .username(boardRequestDto.getUsername())
+                    .imageUrl(boardRequestDto.getImageUrl())
+                    .build();
             Optional<User> user = mockUserRepository.findByUsername(boardRequestDto.getUsername());
             if(!user.isPresent()) {
                 throw new CustomException(EMAIL_NOT_FOUND);
@@ -81,9 +86,5 @@ public class MockBoardService {
             } else {
                 throw new CustomException(UNABLE_DELETE_BOARD);
             }
-
-
         }
-
-
 }

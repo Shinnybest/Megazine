@@ -5,12 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
-import pblweek2.megazine.dto.LikesRequestDto;
-import pblweek2.megazine.dto.SignupRequestDto;
-
 import javax.persistence.*;
 import java.util.*;
 

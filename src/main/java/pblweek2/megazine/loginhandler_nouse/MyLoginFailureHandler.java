@@ -1,24 +1,4 @@
-package pblweek2.megazine.loginhandler;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import groovy.util.logging.Slf4j;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.stereotype.Component;
-
-import javax.naming.AuthenticationException;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+package pblweek2.megazine.loginhandler_nouse;
 
 //@Component
 //@Getter

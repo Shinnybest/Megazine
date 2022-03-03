@@ -31,6 +31,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public Board postBoard(BoardRequestDto boardRequestDto) {
             Board board = Board.builder()
                     .grid(boardRequestDto.getGrid())
@@ -49,7 +50,7 @@ public class BoardService {
             return board;
     }
 
-    @Cacheable(value = "Board")
+//    @Cacheable(value = "Board")
     public List<BoardResponseDto> getAllBoardData() {
         List<Board> board = boardRepository.findAll();
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<BoardResponseDto>();
@@ -60,7 +61,7 @@ public class BoardService {
         return boardResponseDtoList;
     }
 
-    @Cacheable(value = "Board", key = "#boardId")
+//    @Cacheable(value = "Board", key = "#boardId")
     public BoardResponseDto getOneBoardData(Long boardId) {
         Optional<Board> foundBoard = boardRepository.findById(boardId);
         if (!foundBoard.isPresent()) {
@@ -71,7 +72,7 @@ public class BoardService {
     }
 
     @Transactional
-    @CachePut(value="Board", key="#boardId")
+//    @CachePut(value="Board", key="#boardId")
     public void update(Long boardId, BoardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Optional<Board> board = boardRepository.findById(boardId);
         if (!board.isPresent()) {
@@ -86,7 +87,7 @@ public class BoardService {
     }
 
     @Transactional
-    @CacheEvict(value="Board", allEntries = true)
+//    @CacheEvict(value="Board", allEntries = true)
     public void delete(Long boardId, BoardDeleteRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Optional<Board> board = boardRepository.findById(boardId);
         if (!board.isPresent()) {

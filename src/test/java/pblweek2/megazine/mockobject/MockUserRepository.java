@@ -1,6 +1,5 @@
 package pblweek2.megazine.mockobject;
 
-import pblweek2.megazine.domain.Board;
 import pblweek2.megazine.domain.User;
 
 import java.util.ArrayList;

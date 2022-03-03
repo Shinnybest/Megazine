@@ -6,8 +6,6 @@
 <body>
 
 <form th:action="@{/api/login}" method="post">
-    <!-- post 방식으로 /login에 요청, 스프링 시큐리티는 이 요청을 가로채고 사용자를 인증하는 필터 제공 -->
-    <!-- 인증에 실패 시 /login?error 페이지로 리다이렉트-->
     <div><label> User Name : <input type="text" name="username"/> </label></div>
     <div><label> Password: <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="Sign In"/></div>

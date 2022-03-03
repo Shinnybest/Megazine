@@ -3,16 +3,12 @@ package pblweek2.megazine.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pblweek2.megazine.domain.Likelist;
 import pblweek2.megazine.dto.LikesRequestDto;
 import pblweek2.megazine.entityResponse.CancelLikeBoard;
 import pblweek2.megazine.entityResponse.LikeBoard;
-import pblweek2.megazine.entityResponse.Success;
-import pblweek2.megazine.exception.ApiRequestException;
 import pblweek2.megazine.repository.LikesRepository;
-import pblweek2.megazine.security.UserDetailsImpl;
 import pblweek2.megazine.service.LikesService;
 
 @RequiredArgsConstructor

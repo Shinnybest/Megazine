@@ -9,7 +9,7 @@ import pblweek2.megazine.domain.Board;
 import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.BoardRequestDto;
 import pblweek2.megazine.dto.BoardResponseDto;
-import pblweek2.megazine.exception_2.CustomException;
+import pblweek2.megazine.exception.CustomException;
 import pblweek2.megazine.repository.BoardRepository;
 import pblweek2.megazine.repository.UserRepository;
 import pblweek2.megazine.service.BoardService;
@@ -47,7 +47,7 @@ public class BoardIntegrationTest {
 
         Board board2 = Board.builder()
                 .grid("5678")
-                .content("재미없어")
+                .content("즐겁군!")
                 .username("summernight")
                 .imageUrl("image.co.kr")
                 .build();
@@ -119,7 +119,12 @@ public class BoardIntegrationTest {
     void postBoard() {
         //given
         BoardRequestDto dto = new BoardRequestDto("1234", "이름이 뭐니?", "love", "image.com");
-        Board board = new Board(dto);
+        Board board = Board.builder()
+                .grid(dto.getGrid())
+                .content(dto.getContent())
+                .username(dto.getUsername())
+                .imageUrl(dto.getImageUrl())
+                .build();
         Optional<User> user = userRepository.findByUsername(dto.getUsername());
 
         User foundUser = user.get();
@@ -133,5 +138,51 @@ public class BoardIntegrationTest {
         Assertions.assertThat(dto.getGrid()).isEqualTo(savedBoard.getGrid());
         Assertions.assertThat(dto.getUsername()).isEqualTo(savedBoard.getUsername());
         Assertions.assertThat(dto.getImageUrl()).isEqualTo(savedBoard.getImageUrl());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("게시글 수정-성공")
+    void updateBoard() {
+        //given
+        Board board = Board.builder()
+                .grid("1234")
+                .content("이름이 뭐니?")
+                .username("helloworld")
+                .imageUrl("image.com")
+                .build();
+        Board savedBoard = boardRepository.save(board);
+        BoardRequestDto dto = new BoardRequestDto("2345", "취미가 뭐니?", "helloworld", "www.naver.com");
+
+        //when
+        savedBoard.update(dto);
+        Optional<Board> foundBoard = boardRepository.findById(savedBoard.getId());
+
+        // then
+        Assertions.assertThat(foundBoard.get().getUsername()).isEqualTo(savedBoard.getUsername());
+        Assertions.assertThat(foundBoard.get().getContent()).isEqualTo(savedBoard.getContent());
+        Assertions.assertThat(foundBoard.get().getGrid()).isEqualTo(savedBoard.getGrid());
+        Assertions.assertThat(foundBoard.get().getImageUrl()).isEqualTo(savedBoard.getImageUrl());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("게시글 삭제-성공")
+    void deleteBoard() {
+        //given
+        Board board = Board.builder()
+                .grid("1234")
+                .content("반갑습니다!")
+                .username("Nicetomeetyou")
+                .imageUrl("image.com")
+                .build();
+        Board savedBoard = boardRepository.save(board);
+
+        //when
+        boardRepository.delete(savedBoard);
+
+        //then
+        Assertions.assertThat(0).isEqualTo(boardRepository.findAll().size());
+
     }
 }

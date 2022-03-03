@@ -1,12 +1,11 @@
-package pblweek2.megazine.controller;
+package pblweek2.megazine.exception_nouse;
 
-import groovy.util.logging.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pblweek2.megazine.entityResponse.Fail;
-import pblweek2.megazine.exception.*;
+import pblweek2.megazine.exception_nouse.*;
 
 @RestControllerAdvice
 public class ExceptionController {
@@ -18,7 +17,7 @@ public class ExceptionController {
 
     @ExceptionHandler({BoardNotFoundException.class})
     public ResponseEntity<Fail> BoardNotFoundException(BoardNotFoundException ex) {
-        return new ResponseEntity<>(new Fail("해당 게시글은 존재하지 않습니다."), HttpStatus.OK);
+        return new ResponseEntity<>(new Fail(ex.getMessage()), HttpStatus.OK);
     }
 
     @ExceptionHandler({UserNotLoginException.class})

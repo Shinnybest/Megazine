@@ -11,8 +11,7 @@ import pblweek2.megazine.dto.LoginRequestDto;
 import pblweek2.megazine.dto.SignupRequestDto;
 import pblweek2.megazine.dto.UserDataResponseDto;
 import pblweek2.megazine.entityResponse.LoginSuccess;
-import pblweek2.megazine.exception_2.CustomException;
-import pblweek2.megazine.exception_2.ErrorResponse;
+import pblweek2.megazine.exception.CustomException;
 import pblweek2.megazine.service.UserService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -25,11 +24,6 @@ public class UserIntegrationTest {
 
     @Autowired
     UserController userController;
-
-//    Long userId = 100L;
-//    User createdUser = null;
-//    String rawPassword = null;
-
 
     @Test
     @Order(1)
@@ -53,10 +47,8 @@ public class UserIntegrationTest {
 
         //then
         Assertions.assertNotNull(user.getId());
-//        Assertions.assertEquals(userId, user.getId()); // userId 생성은 어떠식으로?
         Assertions.assertEquals(username, user.getUsername());
         Assertions.assertEquals(email, user.getEmail());
-//        Assertions.assertEquals(password, user.getPassword()); // password 체크?
 
     }
 
@@ -248,11 +240,4 @@ public class UserIntegrationTest {
         //then
         Assertions.assertEquals("비밀번호가 일치하지 않습니다.", exception.getErrorCode().getErrorMessage());
     }
-
-
-
-
-
-
-
 }

@@ -3,10 +3,7 @@ package pblweek2.megazine.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pblweek2.megazine.dto.LikesRequestDto;
-
 import javax.persistence.*;
-
 import static javax.persistence.FetchType.*;
 
 @Getter
@@ -33,5 +30,4 @@ public class Likelist {
 
     public void setUser(User user) { this.user = user; }
     public void setBoard(Board board) { this.board = board; }
-
 }

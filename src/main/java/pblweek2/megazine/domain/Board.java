@@ -9,11 +9,9 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.util.Assert;
 import pblweek2.megazine.dto.BoardRequestDto;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import static javax.persistence.FetchType.*;
 
 @Getter
@@ -78,5 +76,4 @@ public class Board extends Timestamped {
         this.username = requestDto.getUsername();
         this.imageUrl = requestDto.getImageUrl();
     }
-
 }

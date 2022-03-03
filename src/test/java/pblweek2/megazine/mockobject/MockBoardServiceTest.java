@@ -8,13 +8,12 @@ import pblweek2.megazine.domain.Board;
 import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.BoardRequestDto;
 import pblweek2.megazine.dto.BoardResponseDto;
-import pblweek2.megazine.exception_2.CustomException;
+import pblweek2.megazine.exception.CustomException;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
-import static pblweek2.megazine.exception_2.ErrorCode.EMAIL_NOT_FOUND;
+import static pblweek2.megazine.exception.ErrorCode.EMAIL_NOT_FOUND;
 
 public class MockBoardServiceTest {
 
