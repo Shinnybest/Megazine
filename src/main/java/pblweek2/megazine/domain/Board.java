@@ -5,13 +5,16 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.util.Assert;
-import pblweek2.megazine.dto.BoardChangeRequestDto;
 import pblweek2.megazine.dto.BoardRequestDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.FetchType.*;
 
 @Getter
 @NoArgsConstructor
@@ -34,11 +37,12 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.JOIN)
     private List<Likelist> likelist = new ArrayList<>();
 
     public Board(BoardRequestDto boardRequestDto) {
