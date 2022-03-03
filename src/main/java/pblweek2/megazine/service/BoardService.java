@@ -1,6 +1,9 @@
 package pblweek2.megazine.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +12,7 @@ import pblweek2.megazine.domain.User;
 import pblweek2.megazine.dto.BoardDeleteRequestDto;
 import pblweek2.megazine.dto.BoardRequestDto;
 import pblweek2.megazine.dto.BoardResponseDto;
-import pblweek2.megazine.exception_2.CustomException;
+import pblweek2.megazine.exception.CustomException;
 import pblweek2.megazine.repository.BoardRepository;
 import pblweek2.megazine.repository.UserRepository;
 import pblweek2.megazine.security.UserDetailsImpl;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static pblweek2.megazine.exception_2.ErrorCode.*;
+import static pblweek2.megazine.exception.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
@@ -46,6 +49,7 @@ public class BoardService {
             return board;
     }
 
+    @Cacheable(value = "Board")
     public List<BoardResponseDto> getAllBoardData() {
         List<Board> board = boardRepository.findAll();
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<BoardResponseDto>();
@@ -56,6 +60,7 @@ public class BoardService {
         return boardResponseDtoList;
     }
 
+    @Cacheable(value = "Board", key = "#boardId")
     public BoardResponseDto getOneBoardData(Long boardId) {
         Optional<Board> foundBoard = boardRepository.findById(boardId);
         if (!foundBoard.isPresent()) {
@@ -66,6 +71,7 @@ public class BoardService {
     }
 
     @Transactional
+    @CachePut(value="Board", key="#boardId")
     public void update(Long boardId, BoardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Optional<Board> board = boardRepository.findById(boardId);
         if (!board.isPresent()) {
@@ -79,6 +85,8 @@ public class BoardService {
         }
     }
 
+    @Transactional
+    @CacheEvict(value="Board", allEntries = true)
     public void delete(Long boardId, BoardDeleteRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Optional<Board> board = boardRepository.findById(boardId);
         if (!board.isPresent()) {
