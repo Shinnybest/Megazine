@@ -1,14 +1,10 @@
-name: CI-CD
+name: megazine CI-CD
 
 on:
   push:
-    branches: master
-
-env:
-  S3_BUCKET_NAME: springboot-megazine
-  RESOURCE_PATH: ./src/main/resources/application.yml
-  CODE_DEPLOY_APPLICATION_NAME: megazine-codedeploy
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: megazine-server
+    branches:
+      - master
+  workflow_dispatch:
   
 jobs:
   build:
@@ -18,25 +14,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up JDK 8
+      - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
-          java-version: 8
+          java-version: '8'
+          
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
         
       - name: Set yaml file 
         uses: microsoft/variable-substitution@v1
         with:
-          files: ${{ env.RESOURCE_PATH }} 
+          files: ./src/main/resources/application.yml
         env:
-          override.value: 'from deploy.yml'
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-        shell: bash
+          spring.datasource.url: ${{ secrets.RDS_HOST }}
+          spring.datasource.username: ${{ secrets.RDS_USERNAME }}
+          spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_S3_SECRET_KEY_ID }}
+          cloud.aws.s3.bucket: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          cloud.aws.s3.region: ${{ secrets.AWS_S3_REGION }}          
 
       - name: Build with Gradle
         run: ./gradlew build
-        shell: bash
 
       - name: Make zip file
         run: zip -r ./$GITHUB_SHA.zip .
@@ -50,12 +50,12 @@ jobs:
           aws-region: ${{ secrets.AWS_S3_REGION }} 
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://springboot-megazine/$GITHUB_SHA.zip
 
       - name: Code Deploy
-        run: | 
-          aws deploy create-deployment \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
-          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
+        run: 
+          aws deploy create-deployment
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --application-name megazine-codedeploy
+          --deployment-group-name megazine-server
+          --s3-location bucket=springboot-megazine,bundleType=zip,key=$GITHUB_SHA.zip
