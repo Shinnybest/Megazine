@@ -11,5 +11,4 @@ public class MegazineSbApplication {
     public static void main(String[] args) {
         SpringApplication.run(MegazineSbApplication.class, args);
     }
-
 }
